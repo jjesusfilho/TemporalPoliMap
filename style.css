@@ -1,0 +1,27 @@
+#title {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+h1 {
+    font-style: bold;
+    margin-bottom: 0px;
+    font-size: 40px;
+    font-family: sans-serif;
+    color: orange;
+}
+
+h2 {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-family: serif;
+    color: purple;
+}
+
+#container {
+    position: relative;
+    width: 900px; 
+    height: 600px;
+    margin: 0px 200px;
+}
+
