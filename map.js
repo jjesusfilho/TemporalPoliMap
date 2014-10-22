@@ -63,9 +63,54 @@ function change_country (ctry, year) {
                         '</div>'].join('');
             	}
         	 }
-         });
-	map.legend();
+            });
+    // map.legend();
 
-});
+    function addLegendBox(layer, data, options) {
+        data = data || {};
+        if ( !this.options.fills ) {
+          return;
+        }
+
+        var html = '<dl>';
+        var label = '';
+        if ( data.legendTitle ) {
+          html = '<h4>' + data.legendTitle + '</h4>' + html;
+        }
+
+        for ( var fillKey in this.options.fills ) {
+
+              if ( fillKey === 'defaultFill') {
+                if (! data.defaultFillName ) {
+                  continue;
+                }
+                label = data.defaultFillName;
+              } else {
+                if (data.labels && data.labels[fillKey]) {
+                  label = data.labels[fillKey];
+                } else {
+
+                // Changed: //
+            label= '' + fillKey;
+            html += '<dd style="background-color:' +  this.options.fills[fillKey] + '">&nbsp;</dd>';
+            html += '<dt>' + label + '</dt>'+ '<br><br>';
+
+                }
+              }
+        }
+        html += '</dl>';
+
+        var hoverover = d3.select( this.options.element ).append('div')
+          .attr('class', 'datamaps-legend')
+          .html(html);
+    }
+
+
+    //Show Legend 
+    map.addPlugin("mylegend", addLegendBox);
+    map.mylegend({legendTitle:"Legend"})
+
+
+    });
 }
 

@@ -20,9 +20,8 @@ h2 {
 
 #container {
     position: relative;
-    width: 900px; 
     height: 600px;
-    margin: 0px 200px;
+    width: 70%;
 }
 
 output {
@@ -41,3 +40,18 @@ output {
 .rangeslider__handle:after {
   background-color: #38A9BD;
 }
+
+.datamaps-legend {
+    top: 150px;
+    padding: 10px !important;
+    float: left;
+    border: 2px solid;
+    font-size: 15px !important;
+    line-height: 10px;
+}
+
+.datamap {
+    position: relative;
+    left: 250px;
+}
+
