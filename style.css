@@ -34,3 +34,10 @@ output {
     width: 100%;
 }
 
+.rangeslider__fill {
+  background-color: #C8C8C8;
+}
+
+.rangeslider__handle:after {
+  background-color: #38A9BD;
+}
