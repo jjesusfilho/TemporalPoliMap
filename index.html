@@ -28,7 +28,7 @@
 	<script	src="map.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		var curr_country = "USA";
-		var curr_year = "2007";
+		var curr_year = "1997";
 		var curr_obj = null;
 		var curr_obj1 = null;
 		$(function () {
@@ -39,12 +39,14 @@
 	                output = element.parentNode.getElementsByTagName('output')[0];
 	            output.innerHTML = value;
 	        }
+
 			$(".chosen-select").chosen().change(function(e){
 				console.log(e.target.value);
 				$('#container').html("");
 				curr_country = e.target.value;
 				change_country(curr_country, curr_year);
 			});
+			
 			$('[data-rangeslider]').rangeslider({
 
 	            // Deactivate the feature detection
