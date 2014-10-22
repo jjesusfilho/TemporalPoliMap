@@ -45,7 +45,6 @@ output {
     top: 150px;
     padding: 10px !important;
     float: left;
-    border: 2px solid;
     font-size: 15px !important;
     line-height: 10px;
 }
