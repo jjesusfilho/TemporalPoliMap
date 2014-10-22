@@ -51,9 +51,16 @@ function change_country (ctry, year) {
                 material_conflict: "#C0392B",
                 material_coorporation: "#2ECC71",
                 selected: "#7F8C8D"
-             },
-             data: curr_data,
-              geographyConfig: {
+            },
+            data: curr_data,
+            geographyConfig: {
+                //highlightOnHover: false,
+                highlightBorderColor: "#000000",
+                highlightBorderWidth: 1,
+                highlightFillColor: function(geo, data) {
+                    var code = geo.id;
+                    return curr_data[code]['fillKey'];
+                },
             	popupTemplate: function(geo, data) {
                 	return ['<div class="hoverinfo"><strong>'+geo.properties.name+'</strong>',
                         '<br /># Verbal Cooperation Events: ' + JSON.stringify(data[1]),
@@ -62,8 +69,17 @@ function change_country (ctry, year) {
                         '<br /># Material Conflict Events: ' + JSON.stringify(data[4]),
                         '</div>'].join('');
             	}
-        	 }
-            });
+        	}
+            /* ,
+            done: function(datamap) {
+                  datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+                      //var m = {};
+                      //m[geography.id] = '#000000';
+                      //datamap.updateChoropleth(m);
+
+                  });
+            }  */
+    });
     // map.legend();
 
     function addLegendBox(layer, data, options) {
@@ -109,6 +125,8 @@ function change_country (ctry, year) {
     //Show Legend 
     map.addPlugin("mylegend", addLegendBox);
     map.mylegend({legendTitle:"Legend"})
+
+
 
 
     });
