@@ -1,14 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title>Temporal PoliMap</title>
         <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="chosen.min.css" />
+        <link rel="stylesheet" type="text/css" href="bower_components/rangeslider.js/dist/rangeslider.css" />
     </head>
     <body>
+    	<h2 id="country-name">Country Name</h2>
+    	<select data-placeholder="Choose a country..." style="width:350px;" class="chosen-select">
+    		<option value="USA">United States</option>
+    		<option value="CHN">China</option>
+    		<option value="IND">India</option>
+    	</select>
+    	<div>
+	        <input type="range" min="1980" max="2014" data-rangeslider>
+	        <output></output>
+	    </div>
 		<div id="container"></div>
 	</body>
 	<script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
 	<script type="text/javascript" src="bower_components/topojson/topojson.js"></script>
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/rangeslider.js/dist/rangeslider.js"></script>
 	<script type="text/javascript" src="bower_components/datamaps/dist/datamaps.all.min.js"></script>
+	<script	src="chosen.jquery.min.js" type="text/javascript"></script>
 	<script	src="map.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var curr_country = "USA";
+		var curr_year = "2007";
+		var curr_obj = null;
+		var curr_obj1 = null;
+		$(function () {
+			// body...
+			change_country(curr_country, curr_year);
+			function valueOutput(element) {
+	            var value = element.value,
+	                output = element.parentNode.getElementsByTagName('output')[0];
+	            output.innerHTML = value;
+	        }
+			$(".chosen-select").chosen().change(function(e){
+				console.log(e.target.value);
+				$('#container').html("");
+				curr_country = e.target.value;
+				change_country(curr_country, curr_year);
+			});
+			$('[data-rangeslider]').rangeslider({
+
+	            // Deactivate the feature detection
+	            polyfill: false,
+
+	            // Callback function
+	            onInit: function() {
+	            	valueOutput(this.$element[0]);
+	            },
+
+	            // Callback function
+	            onSlide: function(position, value) {
+	                /*console.log('onSlide');
+	                console.log('position: ' + position, 'value: ' + value);*/
+	            },
+
+	            // Callback function
+	            onSlideEnd: function(position, value) {
+	                console.log('onSlideEnd');
+	                console.log('position: ' + position, 'value: ' + value);
+	                $('#container').html("");
+		    		curr_year = value;
+		    		change_country(curr_country, curr_year);
+		    		curr_obj = $(this);
+		    		curr_obj1 = this;
+		    		console.log("Current Object: ", $(this));
+		    		valueOutput(this.$element[0]);
+	            }
+	        });/*.on('change', function(e) {
+	            valueOutput(e.target);
+	        });*/
+			/*$('input[type="range"]').on('change', function(){
+	    		console.log($(this).val());
+			});*/
+		});
+	</script>
 </html>

@@ -1,7 +1,12 @@
-d3.csv('data/IND.csv', function(error, raw_data){
-	var selected_cty = "IND";
+function change_country (ctry, year) {
+	// body...
+	d3.csv('data/'+ctry+'.csv', function(error, raw_data){
+		console.log(ctry);
+	var selected_cty = ctry;
+	var curr_year = year;
 	var data = [];
 	var fillKeys = ["verbal_coorporation","material_coorporation","verbal_conflict","material_conflict"];
+	d3.select('#country-name').text(selected_cty+"-"+curr_year);
 	raw_data.forEach(function (d) {
 		// body...
 		if(!(d.Year in data)){
@@ -27,8 +32,17 @@ d3.csv('data/IND.csv', function(error, raw_data){
 		};
 		data[d.Year][d.Target]['fillKey'] = fillKeys[max_i-1];
 	});
-	var curr_data = data['1987'];
+	var curr_data = data[curr_year];
 	curr_data[selected_cty] = {fillKey: 'selected'};
+	/*curr_data['legendTitle'] = "Legend Title";
+	curr_data['labels']= {
+			defaultFill: "Default",
+                verbal_conflict: "Verbal Conflict",
+                verbal_coorporation: "Verbal Cooperation",
+                material_conflict: "Material Conflict",
+                material_coorporation: "Material Cooperation",
+                selected: "Selected Country"
+            };*/
 	var map = new Datamap({element: document.getElementById('container'),
             fills: {
                 defaultFill: "#E5DCCC",
@@ -53,3 +67,5 @@ d3.csv('data/IND.csv', function(error, raw_data){
 	map.legend();
 
 });
+}
+
