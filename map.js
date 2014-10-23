@@ -19,30 +19,31 @@ function change_country (ctry, year) {
 			'ECount':+d.ECount,
 			'StdDevSources': +d.StdDevSources,
 			'NSources': +d.NSources,
+			'MaxSources': +d.MaxSources,
 			'AvgSources': +d.AvgSources
 		};
 		data[d.Year][d.Target]['fillKey'] = "defaultFill";
 		max = 0.0;
 		max_i = 1;
 		for (var i = 1; i <=4; i++) {
-			if(i in data[d.Year][d.Target] && data[d.Year][d.Target][i]['AvgSources'] > max){
+			if(i in data[d.Year][d.Target] && data[d.Year][d.Target][i]['MaxSources'] > max){
 				max_i = i;
-				max = data[d.Year][d.Target][i]['AvgSources'];
+				max = data[d.Year][d.Target][i]['MaxSources'];
 			}
 		};
 		data[d.Year][d.Target]['fillKey'] = fillKeys[max_i-1];
 	});
 	var curr_data = data[curr_year];
 	curr_data[selected_cty] = {fillKey: 'selected'};
-	/*curr_data['legendTitle'] = "Legend Title";
-	curr_data['labels']= {
-			defaultFill: "Default",
-                verbal_conflict: "Verbal Conflict",
-                verbal_coorporation: "Verbal Cooperation",
-                material_conflict: "Material Conflict",
-                material_coorporation: "Material Cooperation",
-                selected: "Selected Country"
-            };*/
+
+    function getVals (d) {
+    	// body...
+    	return "<br/><em>Event Count: </em>"+d['ECount']+
+			"<br/><em>#Sources: </em>"+d['NSources']+
+			"<br/><em>Max Source for Events: </em>"+d['MaxSources']+
+			"<br/><em>Avg Sources/Event: </em>"+d['AvgSources'];
+    }
+
 	var map = new Datamap({element: document.getElementById('container'),
             fills: {
                 defaultFill: "#E5DCCC",
@@ -50,7 +51,7 @@ function change_country (ctry, year) {
                 verbal_coorporation: "#F1C40F",
                 material_conflict: "#C0392B",
                 material_coorporation: "#2ECC71",
-                selected: "#7F8C8D"
+                selected: "#00C4DD"
             },
             data: curr_data,
             geographyConfig: {
@@ -62,12 +63,16 @@ function change_country (ctry, year) {
                     return curr_data[code]['fillKey'];
                 },
             	popupTemplate: function(geo, data) {
-                	return ['<div class="hoverinfo"><strong>'+geo.properties.name+'</strong>',
-                        '<br /># Verbal Cooperation Events: ' + JSON.stringify(data[1]),
-                        '<br /># Verbal Conflict Events: ' + JSON.stringify(data[2]),
-                        '<br /># Material Cooperation Events: ' + JSON.stringify(data[3]),
-                        '<br /># Material Conflict Events: ' + JSON.stringify(data[4]),
-                        '</div>'].join('');
+            		event_data = [];
+            		event_names = ["Verbal Cooperation", "Verbal Conflict", "Material Cooperation", "Material Conflict"]
+            		for (var i = 1; i <= 4; i++) {
+            			if(i in data){
+            				event_data.push("<br /><strong>"+event_names[i-1]+" Events: </strong> "+getVals(data[i]));
+            			}
+            		};
+            		event_data = ['<div class="hoverinfo"><strong>'+geo.properties.name+'</strong>'].concat(event_data);
+            		event_data = event_data.concat('</div>');
+                	return event_data.join('');
             	}
         	}
             /* ,

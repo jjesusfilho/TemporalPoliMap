@@ -34,3 +34,34 @@ FROM
 		WHERE (Actor2CountryCode = 'USA') AND (Actor2CountryCode != Actor1CountryCode)
 	)
 GROUP BY Source, Target, Year, QuadClass ORDER BY AvgSources DESC;
+
+# New Query for 3 charector country codes.
+SELECT Source, Target, Year, QuadClass, Count(EventCode) as ECount, SUM(NumSources) as NSources, MAX(NumSources) as MaxSources, AVG(NumSources) as AvgSources, STDDEV(NumSources) as StdDevSources
+FROM
+	(
+		SELECT  Actor1CountryCode as Source, Actor2CountryCode as Target, Year, QuadClass,EventCode,NumSources
+		FROM [gdelt-bq:full.events]
+		WHERE (Actor1CountryCode = 'USA') AND (Actor1CountryCode != Actor2CountryCode)
+	),
+	(
+		SELECT  Actor2CountryCode as Source, Actor1CountryCode as Target, Year, QuadClass,EventCode,NumSources
+		FROM [gdelt-bq:full.events]
+		WHERE (Actor2CountryCode = 'USA') AND (Actor2CountryCode != Actor1CountryCode)
+	)
+GROUP BY Source, Target, Year, QuadClass ORDER BY AvgSources DESC;
+
+# Test Query
+
+SELECT Source, Target, Year, QuadClass, Count(EventCode) as ECount, SUM(NumSources) as NSources, MAX(NumSources) as MaxSources, AVG(NumSources) as AvgSources, STDDEV(NumSources) as StdDevSources
+FROM
+	(
+		SELECT  Actor1CountryCode as Source, Actor2CountryCode as Target, Year, QuadClass,EventCode,NumSources
+		FROM [gdelt-bq:full.events]
+		WHERE (Actor1CountryCode = 'USA') AND (Actor1CountryCode != Actor2CountryCode) AND Year IN (2011, 2010)
+	),
+	(
+		SELECT  Actor2CountryCode as Source, Actor1CountryCode as Target, Year, QuadClass,EventCode,NumSources
+		FROM [gdelt-bq:full.events]
+		WHERE (Actor2CountryCode = 'USA') AND (Actor2CountryCode != Actor1CountryCode) AND Year IN (2011, 2010)
+	)
+GROUP BY Source, Target, Year, QuadClass HAVING Target = "PAK" ORDER BY AvgSources DESC;
