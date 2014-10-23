@@ -44,6 +44,7 @@ function change_country (ctry, year) {
 
     function getVals (d) {
     	// body...
+        if (d == null) { return ""};
     	return "<br/><em>Event Count: </em>"+d['ECount']+
 			"<br/><em>#Sources: </em>"+d['NSources']+
 			"<br/><em>Max Source for Events: </em>"+d['MaxSources']+
@@ -67,12 +68,15 @@ function change_country (ctry, year) {
                 highlightBorderWidth: 1,
                 highlightFillColor: function(geo, data) {
                     var code = geo.id;
+                    if(curr_data[code] === undefined){
+                        return "#E5DCCC";
+                    }
                     return curr_data[code]['fillKey'];
                 },
                 popupTemplate: function(geo, data) {
                     event_data = [];
                     event_names = ["Verbal Cooperation", "Verbal Conflict", "Material Cooperation", "Material Conflict"]
-                    for (var i = 1; i <= 4; i++) {
+                    for (var i = 1; i <= 4 && data!= null; i++) {
                         if(i in data){
                             event_data.push("<br /><strong>"+event_names[i-1]+" Events: </strong> "+getVals(data[i]));
                         }
@@ -82,15 +86,6 @@ function change_country (ctry, year) {
                     return event_data.join('');
                 }
             }
-            /* ,
-            done: function(datamap) {
-                  datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
-                      //var m = {};
-                      //m[geography.id] = '#000000';
-                      //datamap.updateChoropleth(m);
-
-                  });
-            }  */
     });;
     map_obj.legend({
         legendTitle: "Country Colors",
