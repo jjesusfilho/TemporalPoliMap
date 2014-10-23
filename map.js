@@ -1,3 +1,5 @@
+var data_obj = null;
+
 function change_country (ctry, year) {
 	// body...
 	d3.csv('data/'+ctry+'.csv', function(error, raw_data){
@@ -33,6 +35,7 @@ function change_country (ctry, year) {
 		};
 		data[d.Year][d.Target]['fillKey'] = fillKeys[max_i-1];
 	});
+    data_obj = data;
 	var curr_data = data[curr_year];
 	curr_data[selected_cty] = {fillKey: 'selected'};
 
@@ -85,55 +88,17 @@ function change_country (ctry, year) {
                   });
             }  */
     });
-    // map.legend();
-
-    function addLegendBox(layer, data, options) {
-        data = data || {};
-        if ( !this.options.fills ) {
-          return;
-        }
-
-        var html = '<dl>';
-        var label = '';
-        if ( data.legendTitle ) {
-          html = '<h4>' + data.legendTitle + '</h4>' + html;
-        }
-
-        for ( var fillKey in this.options.fills ) {
-
-              if ( fillKey === 'defaultFill') {
-                if (! data.defaultFillName ) {
-                  continue;
-                }
-                label = data.defaultFillName;
-              } else {
-                if (data.labels && data.labels[fillKey]) {
-                  label = data.labels[fillKey];
-                } else {
-
-                // Changed: //
-            label= '' + fillKey;
-            html += '<dd style="background-color:' +  this.options.fills[fillKey] + '">&nbsp;</dd>';
-            html += '<dt>' + label + '</dt>'+ '<br><br>';
-
-                }
-              }
-        }
-        html += '</dl>';
-
-        var hoverover = d3.select( this.options.element ).append('div')
-          .attr('class', 'datamaps-legend')
-          .html(html);
-    }
-
-
-    //Show Legend 
-    map.addPlugin("mylegend", addLegendBox);
-    map.mylegend({legendTitle:"Legend"})
-
-
-
-
+    map.legend({
+        legendTitle: "Country Colors",
+        defaultFillName: "No data",
+        labels: {
+                verbal_conflict: "Verbal Conflict",
+                verbal_coorporation: "Verbal Cooperation",
+                material_conflict: "Material Conflict",
+                material_coorporation: "Material Cooperation",
+                selected: "Selected Country"
+            }
+    });
     });
 }
 

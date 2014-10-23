@@ -3,21 +3,6 @@
     font-family: sans-serif;
 }
 
-h1 {
-    font-style: bold;
-    margin-bottom: 0px;
-    font-size: 40px;
-    font-family: sans-serif;
-    color: orange;
-}
-
-h2 {
-    margin-bottom: 0px;
-    margin-top: 0px;
-    font-family: serif;
-    color: purple;
-}
-
 #container {
     position: relative;
     height: 600px;
@@ -41,12 +26,29 @@ output {
   background-color: #38A9BD;
 }
 
+
+.datamaps-legend dt {
+    float: none !important;
+    margin: 2px !important;
+}
+
+.datamaps-legend dd {
+    float: right !important;
+    margin-top: -15px !important;
+}
 .datamaps-legend {
-    top: 150px;
-    padding: 10px !important;
-    float: left;
-    font-size: 15px !important;
-    line-height: 10px;
+    left: 100px !important;
+    top: 280px;
+    width: 200px;
+    padding: 5px !important;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.datamaps-legend h2{
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .datamap {
@@ -54,3 +56,12 @@ output {
     left: 250px;
 }
 
+.navbar-default .navbar-brand {
+    margin-right: 50px;
+    margin-left: 20px;
+    background: none;
+    font-size: 32px;
+    width: inherit;
+    height: inherit;
+    line-height: 40px;
+}
