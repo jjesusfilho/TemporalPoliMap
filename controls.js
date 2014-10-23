@@ -3,6 +3,7 @@ var curr_year = 2007;
 var curr_obj = null;
 var curr_obj1 = null;
 var slider = null;
+var intervalId = null;
 $(function () {
 	// body...
 	change_country(curr_country, curr_year);
@@ -12,6 +13,22 @@ $(function () {
         output.innerHTML = value;
         console.log("New Value", value);
     }
+
+    function startAnimation() {
+        // body...
+        intervalId = window.setInterval(function() {
+            if (curr_year > curr_obj1.max) {window.clearInterval(intervalId)};
+            slider.val(curr_year+1).change();
+            console.log("Updating year to: "+curr_year);
+        }, 20000);
+    }
+
+    function endAnimation () {
+        // body...
+        window.clearInterval(intervalId);
+        intervalId = null;
+    }
+
 	$(".chosen-select").chosen().change(function(e){
 		console.log(e.target.value);
 		$('#container').html("");
@@ -46,10 +63,32 @@ $(function () {
     });
     curr_year = 2007;
     slider.val(curr_year).change(); // Update slider to current year.
-    var intervalId = null;
-    intervalId = window.setInterval(function() {
-        if (curr_year > curr_obj1.max) {window.clearInterval(intervalId)};
+    
+
+    $("#start_t").on("click", function (e) {
+        // body...
+        $(this).children("span.glyphicon").toggleClass("glyphicon-play");
+        $(this).children("span.glyphicon").toggleClass("glyphicon-pause");
+        var curr_txt = $(this).children("span.lbl").text();
+        if(curr_txt == "Start"){
+            $(this).children("span.lbl").text("Pause");
+            startAnimation();
+        }
+        else{
+            $(this).children("span.lbl").text("Start");
+            endAnimation();
+        }
+
+
+    });
+
+    $("#back_t").on("click", function (e) {
+        // body...
+        slider.val(curr_year-1).change();
+    });
+
+    $("#next_t").on("click", function (e) {
+        // body...
         slider.val(curr_year+1).change();
-        console.log("Updating year to: "+curr_year);
-    }, 30000);
+    });
 });

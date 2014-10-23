@@ -78,21 +78,33 @@
             <div class="box">
                 <div class="center gap">
                 <h2 id="country-name">Country Name</h2>
-                <select data-placeholder="Choose a country..." style="width:350px;" class="chosen-select">
-                    <option value="USA">United States</option>
-                    <option value="CHN">China</option>
-                    <option value="IND">India</option>
-                    <option value="AFG">Afghanistan</option>
-                    <option value="BRA">Brazil</option>
-                    <option value="FRA">France</option>
-                    <option value="GBR">England</option>
-                    <option value="IRN">Iran</option>
-                    <option value="IRQ">Iraq</option>
-                    <option value="PAK">Pakistan</option>
-                    <option value="ISR">Israel</option>
-                    <option value="RUS">Russia</option>
-                    <option value="ZAF">South Africa</option>
-                </select>
+                <div class="form-group">
+                    <select data-placeholder="Choose a country..." style="width:350px;" class="chosen-select form-control">
+                        <option value="USA">United States</option>
+                        <option value="CHN">China</option>
+                        <option value="IND">India</option>
+                        <option value="AFG">Afghanistan</option>
+                        <option value="BRA">Brazil</option>
+                        <option value="FRA">France</option>
+                        <option value="GBR">England</option>
+                        <option value="IRN">Iran</option>
+                        <option value="IRQ">Iraq</option>
+                        <option value="PAK">Pakistan</option>
+                        <option value="ISR">Israel</option>
+                        <option value="RUS">Russia</option>
+                        <option value="ZAF">South Africa</option>
+                    </select>
+                    <button type="button" id="start_t" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-play"></span><span class="lbl">Start</span>
+                    </button> 
+                    <button type="button" id="back_t" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-step-backward"></span>
+                    </button> 
+                    <button type="button" id="next_t" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-step-forward"></span>
+                    </button>                    
+                </div>
+                
                 <div>
                     <input type="range" min="1980" max="2014" data-rangeslider>
                     <output></output>
