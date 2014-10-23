@@ -2,6 +2,7 @@ var curr_country = "USA";
 var curr_year = 2007;
 var curr_obj = null;
 var curr_obj1 = null;
+var slider = null;
 $(function () {
 	// body...
 	change_country(curr_country, curr_year);
@@ -16,7 +17,7 @@ $(function () {
 		curr_country = e.target.value;
 		change_country(curr_country, curr_year);
 	});
-	$('[data-rangeslider]').rangeslider({
+	slider = $('[data-rangeslider]').rangeslider({
 
         // Deactivate the feature detection
         polyfill: false,

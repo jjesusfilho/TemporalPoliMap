@@ -5,8 +5,8 @@
 
 #container {
     position: relative;
-    height: 600px;
-    width: 70%;
+    height: 400px;
+    width: 100%;
 }
 
 output {
@@ -37,8 +37,7 @@ output {
     margin-top: -15px !important;
 }
 .datamaps-legend {
-    left: 100px !important;
-    top: 280px;
+    top: 200px;
     width: 200px;
     padding: 5px !important;
     border: 1px solid;
@@ -53,7 +52,6 @@ output {
 
 .datamap {
     position: relative;
-    left: 250px;
 }
 
 .navbar-default .navbar-brand {
