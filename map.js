@@ -5,9 +5,14 @@ function change_country (ctry, year) {
 	var selected_cty = ctry;
 	var curr_year = year;
 	var data = [];
+    var dataQuad1 = {};
+    var dataQuad2 = {};
+    var dataQuad3 = {};
+    var dataQuad4 = {};
 	var fillKeys = ["verbal_coorporation","material_coorporation","verbal_conflict","material_conflict"];
 	d3.select('#country-name').text(selected_cty+"-"+curr_year);
-	raw_data.forEach(function (d) {
+	
+    raw_data.forEach(function (d) {
 		// body...
 		if(!(d.Year in data)){
 			data[d.Year] = {};
@@ -31,10 +36,68 @@ function change_country (ctry, year) {
 				max = data[d.Year][d.Target][i]['MaxSources'];
 			}
 		};
+
+        if(max_i == 1) {
+            if(!(d.Year in dataQuad1)) {
+                dataQuad1[d.Year] = [];
+            }
+            dataQuad1[d.Year].push(max);
+        } else if(max_i == 2) {
+            if(!(d.Year in dataQuad2)) {
+                dataQuad2[d.Year] = [];
+            }
+            dataQuad2[d.Year].push(max);
+        } else if(max_i == 3) {
+            if(!(d.Year in dataQuad3)) {
+                dataQuad3[d.Year] = [];
+            }
+            dataQuad3[d.Year].push(max);
+        } else if(max_i == 4) {
+            if(!(d.Year in dataQuad4)) {
+                dataQuad4[d.Year] = [];
+            }
+            dataQuad4[d.Year].push(max);
+        }
+
+        
 		data[d.Year][d.Target]['fillKey'] = fillKeys[max_i-1];
+        // console.log(data[d.Year]);
 	});
-	var curr_data = data[curr_year];
+
+	var curr_data = data[curr_year]; // already based on year!!
 	curr_data[selected_cty] = {fillKey: 'selected'};
+
+    Object.size = function(obj) {
+        var size = 0;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+
+    // Get the size of an object
+    var size1 = Object.size(dataQuad1);
+
+    console.log(size1); // 36 years
+
+    function getRange(dataQuad, year) {
+        var arr = dataQuad[year].sort( function(a, b) {return a - b} );
+        return [arr[0], arr[arr.length-1]];
+    }
+
+    console.log(getRange(dataQuad1, curr_year));
+    console.log(dataQuad1[curr_year]);
+
+
+    /* var total = 0;
+
+    for(var each in dataQuad1) {
+        total += dataQuad1[each].length;
+    }
+
+    console.log(total); */
+
+    
 
     function getVals (d) {
     	// body...
