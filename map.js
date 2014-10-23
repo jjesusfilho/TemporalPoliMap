@@ -78,7 +78,7 @@ function change_country (ctry, year) {
                 highlightBorderWidth: 1,
                 highlightFillColor: function(geo, data) {
                     var code = geo.id;
-                    if(curr_data[code] === undefined){
+                    if(curr_data[code] === undefined || curr_data[code]['fillKey'] === undefined){
                         return "#E5DCCC";
                     }
                     return curr_data[code]['fillKey'];
@@ -108,22 +108,28 @@ function change_country (ctry, year) {
                 selected: "Selected Country"
             }
     });
+    function getDomain (cd, i) {
+        // body...
+        var r = d3.extent(d3.values(curr_data),function(d){
+            if(d === undefined){return 0;} if(!(i in d)){return 0} return d[i].MaxSources;
+        });
+        return r;
+        //return [r[0], (r[0]+r[1])/2.0,r[1]];
+    }
+    function getRange (c_rgb) {
+        // body...
+        return ["#ffffff", d3.rgb(c_rgb)];
+        //return [d3.rgb(c_rgb).brighter(5),d3.rgb(c_rgb),d3.rgb(c_rgb).darker(1)];
+
+    }
     var vcf_scale = d3.scale.linear()
-        .domain(d3.extent(d3.values(curr_data),function(d){
-            if(d === undefined){return 0;} if(!(3 in d)){return 0} return d[3].MaxSources;
-        })).range(["#ffffff","#34495E"]); // Visual Conflict range
+        .domain(getDomain(curr_data,3)).range(getRange("#34495E")); // Visual Conflict range
     var vcp_scale = d3.scale.linear()
-        .domain(d3.extent(d3.values(curr_data),function(d){
-            if(d === undefined){return 0;} if(!(1 in d)){return 0} return d[1].MaxSources;
-        })).range(["#ffffff","#F1C40F"]); // Visual Cooperation range
+        .domain(getDomain(curr_data,1)).range(getRange("#F1C40F")); // Visual Cooperation range
     var mcp_scale = d3.scale.linear()
-        .domain(d3.extent(d3.values(curr_data),function(d){
-            if(d === undefined){return 0;} if(!(2 in d)){return 0} return d[2].MaxSources;
-        })).range(["#ffffff","#2ECC71"]); // Material Cooperation range
+        .domain(getDomain(curr_data,2)).range(getRange("#2ECC71")); // Material Cooperation range
     var mcf_scale = d3.scale.linear()
-        .domain(d3.extent(d3.values(curr_data),function(d){
-            if(d === undefined){return 0;} if(!(4 in d)){return 0} return d[4].MaxSources;
-        })).range(["#ffffff","#C0392B"]); // Material Conflict range
+        .domain(getDomain(curr_data,4)).range(getRange("#C0392B")); // Material Conflict range
     var color_scales = [vcp_scale,mcp_scale,vcf_scale,mcf_scale]
     var curr_data_arr = d3.entries(curr_data);
     var color_data = [{},{},{},{}];
