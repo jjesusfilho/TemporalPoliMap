@@ -1,7 +1,9 @@
 var data_obj = null;
+var map_obj = null;
 
 function change_country (ctry, year) {
 	// body...
+    console.log("Current Map Object: ", map_obj);
 	d3.csv('data/'+ctry+'.csv', function(error, raw_data){
 		console.log(ctry);
 	var selected_cty = ctry;
@@ -36,6 +38,7 @@ function change_country (ctry, year) {
 		data[d.Year][d.Target]['fillKey'] = fillKeys[max_i-1];
 	});
     data_obj = data;
+    console.log("Current Data Object: ", data_obj);
 	var curr_data = data[curr_year];
 	curr_data[selected_cty] = {fillKey: 'selected'};
 
@@ -47,7 +50,8 @@ function change_country (ctry, year) {
 			"<br/><em>Avg Sources/Event: </em>"+d['AvgSources'];
     }
 
-	var map = new Datamap({element: document.getElementById('container'),
+    map_obj = new Datamap({
+            element: document.getElementById('container'),
             fills: {
                 defaultFill: "#E5DCCC",
                 verbal_conflict: "#34495E",
@@ -65,19 +69,19 @@ function change_country (ctry, year) {
                     var code = geo.id;
                     return curr_data[code]['fillKey'];
                 },
-            	popupTemplate: function(geo, data) {
-            		event_data = [];
-            		event_names = ["Verbal Cooperation", "Verbal Conflict", "Material Cooperation", "Material Conflict"]
-            		for (var i = 1; i <= 4; i++) {
-            			if(i in data){
-            				event_data.push("<br /><strong>"+event_names[i-1]+" Events: </strong> "+getVals(data[i]));
-            			}
-            		};
-            		event_data = ['<div class="hoverinfo"><strong>'+geo.properties.name+'</strong>'].concat(event_data);
-            		event_data = event_data.concat('</div>');
-                	return event_data.join('');
-            	}
-        	}
+                popupTemplate: function(geo, data) {
+                    event_data = [];
+                    event_names = ["Verbal Cooperation", "Verbal Conflict", "Material Cooperation", "Material Conflict"]
+                    for (var i = 1; i <= 4; i++) {
+                        if(i in data){
+                            event_data.push("<br /><strong>"+event_names[i-1]+" Events: </strong> "+getVals(data[i]));
+                        }
+                    };
+                    event_data = ['<div class="hoverinfo"><strong>'+geo.properties.name+'</strong>'].concat(event_data);
+                    event_data = event_data.concat('</div>');
+                    return event_data.join('');
+                }
+            }
             /* ,
             done: function(datamap) {
                   datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
@@ -87,8 +91,8 @@ function change_country (ctry, year) {
 
                   });
             }  */
-    });
-    map.legend({
+    });;
+    map_obj.legend({
         legendTitle: "Country Colors",
         defaultFillName: "No data",
         labels: {
@@ -99,6 +103,8 @@ function change_country (ctry, year) {
                 selected: "Selected Country"
             }
     });
+
+    //map_obj.updateChoropleth(curr_data);
     });
 }
 

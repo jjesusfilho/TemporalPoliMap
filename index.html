@@ -1,40 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Temporal PoliMap</title>
-        <link rel="stylesheet" href="chosen.min.css" />
-        <link rel="stylesheet" type="text/css" href="bower_components/rangeslider.js/dist/rangeslider.css" />
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-    	<h2 id="country-name">Country Name</h2>
-    	<select data-placeholder="Choose a country..." style="width:350px;" class="chosen-select">
-    		<option value="USA">United States</option>
-    		<option value="CHN">China</option>
-    		<option value="IND">India</option>
-    		<option value="AFG">Afghanistan</option>
-    		<option value="BRA">Brazil</option>
-    		<option value="FRA">France</option>
-    		<option value="GBR">England</option>
-    		<option value="IRN">Iran</option>
-    		<option value="IRQ">Iraq</option>
-    		<option value="PAK">Pakistan</option>
-    		<option value="ISR">Israel</option>
-    		<option value="RUS">Russia</option>
-    		<option value="ZAF">South Africa</option>
-    	</select>
-    	<div>
-	        <input type="range" min="1980" max="2014" data-rangeslider>
-	        <output></output>
-	    </div>
-		<div id="container"></div>
-	</body>
-	<script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
-	<script type="text/javascript" src="bower_components/topojson/topojson.js"></script>
-	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="bower_components/rangeslider.js/dist/rangeslider.min.js"></script>
-	<script type="text/javascript" src="bower_components/datamaps/dist/datamaps.all.min.js"></script>
-	<script	src="chosen.jquery.min.js" type="text/javascript"></script>
-	<script	src="map.js" type="text/javascript"></script>
-	<script src="controls.js" type="text/javascript"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Temporal PoliMap | CS 467 Project 2</title>
+    <!-- Native Theme stylesheets below this -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/prettyPhoto.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Custom stylesheets below this -->
+    <link rel="stylesheet" href="chosen.min.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/rangeslider.js/dist/rangeslider.css" />
+    <link rel="stylesheet" href="style.css" />
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+</head><!--/head-->
+
+<body data-spy="scroll" data-target="#navbar" data-offset="0">
+    <header id="header" role="banner">
+        <div class="container">
+            <div id="navbar" class="navbar navbar-default">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Temporal PoliMap</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="active"><a href="#main-slider"><i class="icon-home"></i></a></li>
+                        <li><a href="#portfolio">Map</a></li>
+                        <li><a href="#about-us">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header><!--/#header-->
+
+    <section id="main-slider" class="carousel">
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-content">
+                        <h1>Temporal Political Map</h1>
+                        <p class="lead">This map is made using data from the GDELT dataset.<br>GDELT dataset is now queriable using the Google bigquery api.</p>
+                    </div>
+                </div>
+            </div><!--/.item-->
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-content">
+                        <h1>Color Details</h1>
+                        <p class="lead">The map tries to highlight the 4 major types of relations a selected country has with another country.<br>These are verbal and material cooperation or conflicts.</p>
+                    </div>
+                </div>
+            </div><!--/.item-->
+        </div><!--/.carousel-inner-->
+        <a class="prev" href="#main-slider" data-slide="prev"><i class="icon-angle-left"></i></a>
+        <a class="next" href="#main-slider" data-slide="next"><i class="icon-angle-right"></i></a>
+    </section><!--/#main-slider-->
+
+    <section id="portfolio">
+        <div class="container">
+            <div class="box">
+                <div class="center gap">
+                <h2 id="country-name">Country Name</h2>
+                <select data-placeholder="Choose a country..." style="width:350px;" class="chosen-select">
+                    <option value="USA">United States</option>
+                    <option value="CHN">China</option>
+                    <option value="IND">India</option>
+                    <option value="AFG">Afghanistan</option>
+                    <option value="BRA">Brazil</option>
+                    <option value="FRA">France</option>
+                    <option value="GBR">England</option>
+                    <option value="IRN">Iran</option>
+                    <option value="IRQ">Iraq</option>
+                    <option value="PAK">Pakistan</option>
+                    <option value="ISR">Israel</option>
+                    <option value="RUS">Russia</option>
+                    <option value="ZAF">South Africa</option>
+                </select>
+                <div>
+                    <input type="range" min="1980" max="2014" data-rangeslider>
+                    <output></output>
+                </div>
+                </div><!--/.center-->
+                <div id="container"></div><!-- Map Div -->
+            </div><!--/.box-->
+        </div><!--/.container-->
+    </section><!--/#portfolio-->
+
+    <section id="about-us">
+        <div class="container">
+            <div class="box">
+                <div class="center">
+                    <h2>Meet the Team</h2>
+                    <p class="lead">For checking our code please visit: <a href="https://github.com/napsternxg/TemporalPoliMap">Our Github Repository</a></p>
+                </div>
+                <div class="gap"></div>
+                <div id="team-scroller" class="carousel scale">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="member">
+                                        <p><img class="img-responsive img-thumbnail img-circle" src="images/shubhanshu.jpg" alt="" ></p>
+                                        <h3>Shubhanshu<small class="designation">PhD, Graduate School of Library and Information Sciencet</small></h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="member">
+                                        <p><img class="img-responsive img-thumbnail img-circle" src="images/pani.jpg" alt="" ></p>
+                                        <h3>Panindra<small class="designation">Masters, Computer Science</small></h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="member">
+                                        <p><img class="img-responsive img-thumbnail img-circle" src="images/sally.jpg" alt="" ></p>
+                                        <h3>Sally<small class="designation">Masters, Computer Science </small></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/.carousel-->
+            </div><!--/.box-->
+        </div><!--/.container-->
+    </section><!--/#about-us-->
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    &copy; 2013 <a target="_blank" href="http://shapebootstrap.net/" title="Free Twitter Bootstrap WordPress Themes and HTML templates">ShapeBootstrap</a>. All Rights Reserved.
+                </div>
+                <div class="col-sm-6">
+                    Made for Course CS 467 - Social Visualization.
+                </div>
+            </div>
+        </div>
+    </footer><!--/#footer-->
+    <script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
+    <script type="text/javascript" src="bower_components/topojson/topojson.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/rangeslider.js/dist/rangeslider.min.js"></script>
+    <script type="text/javascript" src="bower_components/datamaps/dist/datamaps.all.min.js"></script>
+    <script src="chosen.jquery.min.js" type="text/javascript"></script>
+    <script src="map.js" type="text/javascript"></script>
+    <script src="controls.js" type="text/javascript"></script>
+    <!-- Native JS files below this -->
+    <!--<script src="js/jquery.js"></script>-->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.isotope.min.js"></script>
+    <script src="js/jquery.prettyPhoto.js"></script>
+    <script src="js/main.js"></script>
+</body>
 </html>
