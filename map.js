@@ -3,7 +3,7 @@ var map_obj = null;
 
 function change_country (ctry, year) {
 	// body...
-    console.log("Current Map Object: ", map_obj);
+    //console.log("Current Map Object: ", map_obj);
 	d3.csv('data/'+ctry+'.csv', function(error, raw_data){
 		console.log(ctry);
 	var selected_cty = ctry;
@@ -13,11 +13,21 @@ function change_country (ctry, year) {
 	d3.select('#country-name').text(selected_cty+"-"+curr_year);
 	raw_data.forEach(function (d) {
 		// body...
+        if (d === undefined) {return};
 		if(!(d.Year in data)){
 			data[d.Year] = {};
 		}
 		if(!(d.Target in data[d.Year])){
 			data[d.Year][d.Target] = {};
+            for (var i = 1; i <= 4; i++) {
+                data[d.Year][d.Target][i] = {
+                    'ECount':0,
+                    'StdDevSources': 0,
+                    'NSources': 0,
+                    'MaxSources': 0,
+                    'AvgSources': 0
+                };
+            };
 		} 
 		data[d.Year][d.Target][d.QuadClass] = {
 			'ECount':+d.ECount,
@@ -40,7 +50,7 @@ function change_country (ctry, year) {
     data_obj = data;
     console.log("Current Data Object: ", data_obj);
 	var curr_data = data[curr_year];
-	curr_data[selected_cty] = {fillKey: 'selected'};
+	curr_data[selected_cty] = {fillKey: 'selected'};    
 
     function getVals (d) {
     	// body...
@@ -50,7 +60,7 @@ function change_country (ctry, year) {
 			"<br/><em>Max Source for Events: </em>"+d['MaxSources']+
 			"<br/><em>Avg Sources/Event: </em>"+d['AvgSources'];
     }
-
+    d3.select('#container').html(""); // Clear out the container before creating a new map.
     map_obj = new Datamap({
             element: document.getElementById('container'),
             fills: {
@@ -98,8 +108,36 @@ function change_country (ctry, year) {
                 selected: "Selected Country"
             }
     });
-
-    //map_obj.updateChoropleth(curr_data);
+    var vcf_scale = d3.scale.linear()
+        .domain(d3.extent(d3.values(curr_data),function(d){
+            if(d === undefined){return 0;} if(!(3 in d)){return 0} return d[3].MaxSources;
+        })).range(["#ffffff","#34495E"]); // Visual Conflict range
+    var vcp_scale = d3.scale.linear()
+        .domain(d3.extent(d3.values(curr_data),function(d){
+            if(d === undefined){return 0;} if(!(1 in d)){return 0} return d[1].MaxSources;
+        })).range(["#ffffff","#F1C40F"]); // Visual Cooperation range
+    var mcp_scale = d3.scale.linear()
+        .domain(d3.extent(d3.values(curr_data),function(d){
+            if(d === undefined){return 0;} if(!(2 in d)){return 0} return d[2].MaxSources;
+        })).range(["#ffffff","#2ECC71"]); // Material Cooperation range
+    var mcf_scale = d3.scale.linear()
+        .domain(d3.extent(d3.values(curr_data),function(d){
+            if(d === undefined){return 0;} if(!(4 in d)){return 0} return d[4].MaxSources;
+        })).range(["#ffffff","#C0392B"]); // Material Conflict range
+    var color_scales = [vcp_scale,mcp_scale,vcf_scale,mcf_scale]
+    var curr_data_arr = d3.entries(curr_data);
+    var color_data = [{},{},{},{}];
+    for (var i = curr_data_arr.length - 1; i >= 0; i--) {
+        for (var j = 1; j <= 4; j++) {
+            if(curr_data_arr[i].value['fillKey'] == fillKeys[j-1]){
+                color_data[j-1][curr_data_arr[i].key] = color_scales[j-1](curr_data_arr[i].value[j].MaxSources);
+                //console.log("Deleted Key for: ", curr_data_arr[i]);
+            }
+        };
+    };
+    for (var i = 0; i < 4; i++) {
+        map_obj.updateChoropleth(color_data[i]);
+    };
     });
 }
 

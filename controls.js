@@ -6,7 +6,9 @@ var slider = null;
 var intervalId = null;
 $(function () {
 	// body...
-	change_country(curr_country, curr_year);
+    $('#container').html("");
+    console.log("First Map Created");
+	change_country(curr_country, curr_year); // Initial Map created. 
 	function valueOutput(element) {
         var value = element.value,
             output = element.parentNode.getElementsByTagName('output')[0];
@@ -33,6 +35,7 @@ $(function () {
 		console.log(e.target.value);
 		$('#container').html("");
 		curr_country = e.target.value;
+        console.log("Next Map Created on Choosen");
 		change_country(curr_country, curr_year);
 	});
 	slider = $('[data-rangeslider]').rangeslider({
@@ -46,13 +49,14 @@ $(function () {
             console.log('position: ' + position, 'value: ' + value);
     		curr_year = value;
     		if(map_obj != null && data_obj != null && 0){
-                console.log("Updating exiting map for: ", curr_country, "Map Obj: ", map_obj);
+                //console.log("Updating exiting map for: ", curr_country, "Map Obj: ", map_obj);
                 console.log("Current Data Object: ", data_obj);
                 map_obj.updateChoropleth(data_obj[curr_year]);
             }
             else{
                 $('#container').html("");
-                console.log("Creating new map for: ", curr_country, "Map Obj: ", map_obj);
+                //console.log("Creating new map for: ", curr_country, "Map Obj: ", map_obj);
+                console.log("Next Map Created on Change Slider");
                 change_country(curr_country,curr_year);
             }
     		curr_obj = $(this);
