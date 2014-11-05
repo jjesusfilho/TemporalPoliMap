@@ -1,1 +1,6 @@
 .DS_Store
+*.p12
+*.pyc
+*.pyo
+auth_settings.py
+*.pem
