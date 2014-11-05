@@ -1,0 +1,12 @@
+# BigQuery project id as listed in the Google Developers Console.
+project_id = ''
+
+# Service account email address as listed in the Google Developers Console.
+service_account = ''
+
+# PKCS12 or PEM key provided by Google.
+key_file = ''
+
+# Get the key from the file.
+with open(key_file) as fp:
+    key = fp.read()
