@@ -8,6 +8,7 @@ client = client.get_client(project_id, service_account=service_account,
 def getData(cty_code):
     global client
     # Submit a query.
+    print "Downloading data for: ", cty_code
     job_id, results = client.query("""
                         SELECT Source, Target, Year, QuadClass, Count(EventCode) as ECount, SUM(NumSources) as NSources, MAX(NumSources) as MaxSources, AVG(NumSources) as AvgSources, STDDEV(NumSources) as StdDevSources
                         FROM
@@ -48,13 +49,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.all is None and args.c == '' or args.c is None:
         parser.print_help()
-    if args.all:
+    elif args.all:
         codes = ["USA","CHN","IND","AFG","BRA","FRA","GBR","IRN","IRQ","PAK","ISR","RUS","ZAF","AUS", "GRC"]
         print "Downloading data for following countries: ", codes
         for code in codes:
             getData(code)
-    if args.c != '' or args.c is not None:
+    elif args.c != '' or args.c is not None:
         codes = args.c
         print "Downloading data for following countries: ", codes
-        getData(args.c)
+        for code in codes:
+            getData(code)
     print "Done"
