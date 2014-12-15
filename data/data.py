@@ -47,6 +47,7 @@ if __name__ == "__main__":
     parser.add_argument('--all', help='fetch data for all countries')
     parser.add_argument('-c', type=str, nargs='+', help='fetch data for the 3 letter country code given.')
     args = parser.parse_args()
+    print args
     if args.all is None and args.c == '' or args.c is None:
         parser.print_help()
     elif args.all:
