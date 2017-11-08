@@ -11,41 +11,12 @@ function change_country (ctry, year) {
 	var data = [];
 	var fillKeys = ["verbal_coorporation","material_coorporation","verbal_conflict","material_conflict"];
 	d3.select('#country-name').text(selected_cty+"-"+curr_year);
-	console.log("Showcase log: ", raw_data.length);
-	var mean_values = [];
-	
-	raw_data.forEach(function (d) {
-		// body...
-        if (d === undefined) {return};
+	for(var i=0; i < raw_data.length; i++){
+		var d = raw_data[i];
+		if (d === undefined) {continue};
 		if(!(d.Year in data)){
 			data[d.Year] = {};
 		}
-		/*
-		* Calculate mean values
-		*/
-		if(!(d.Year in mean_values)){
-			mean_values[d.Year] = {};
-		}
-		for (var i = 1; i <= 4; i++) {
-			if(!(i in mean_values[d.Year])){
-				mean_values[d.Year][i] = {
-					'ECount':0,
-					'StdDevSources': 0,
-					'NSources': 0,
-					'MaxSources': 0,
-					'AvgSources': 0,
-					'N': 0,
-				};
-			} 
-        };
-		mean_values[d.Year][d.QuadClass] = {
-			'ECount': (mean_values[d.Year][d.QuadClass]['ECount']*mean_values[d.Year][d.QuadClass]['N']+(+d.ECount))/(mean_values[d.Year][d.QuadClass]['N']+1),
-			'MaxSources': (mean_values[d.Year][d.QuadClass]['MaxSources']*mean_values[d.Year][d.QuadClass]['N']+(+d.MaxSources))/(mean_values[d.Year][d.QuadClass]['N']+1),
-			'N': mean_values[d.Year][d.QuadClass]['N'] + 1
-		};
-		/*
-		* Calculate invidual values
-		*/
 		if(!(d.Target in data[d.Year])){
 			data[d.Year][d.Target] = {};
             for (var i = 1; i <= 4; i++) {
@@ -77,8 +48,7 @@ function change_country (ctry, year) {
 			}
 		};
 		data[d.Year][d.Target]['fillKey'] = fillKeys[max_i-1];
-	});
-	console.log(mean_values);
+	}
     data_obj = data;
     console.log("Current Data Object: ", data_obj);
 	var curr_data = data[curr_year];
@@ -110,22 +80,10 @@ function change_country (ctry, year) {
                 highlightBorderWidth: 1,
                 highlightFillColor: function(geo, data) {
                     var code = geo.id;
-                    if(data[code] === undefined || data[code]['fillKey'] === undefined){
+                    if(curr_data[code] === undefined || curr_data[code]['fillKey'] === undefined){
                         return "#E5DCCC";
                     }
-					max = 0.0;
-					max_i = 1;
-					sort_key = 'ECount';
-					for (var i = 1; i <=4; i++) {
-						var sort_check_val = data[code][i][sort_key] * 1./ mean_values[curr_year][i][sort_key];
-						if(i in data[code] && sort_check_val > max){
-							max_i = i;
-							//max = data[d.Year][d.Target][i]['MaxSources'];
-							max = sort_check_val;
-						}
-					};
-					data[code]['fillKey'] = fillKeys[max_i-1];
-                    return data[code]['fillKey'];
+                    return curr_data[code]['fillKey'];
                 },
                 popupTemplate: function(geo, data) {
                     event_data = [];
